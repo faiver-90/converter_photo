@@ -101,5 +101,3 @@ if __name__ == "__main__":
     time = perf_counter()
     main()
     print("*" * 100, "\n", perf_counter() - time, "\n", "*" * 100)
-
-#  python convert_images.py --input 'E:\TopHotels\all\отели_медиа\The Oberoi Beach Resort, Sahl Hasheesh'
