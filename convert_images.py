@@ -9,9 +9,15 @@ from PIL import Image, ImageOps
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import os
 
-MAX_SIDE = 2990
-MAX_MB = 10
-ALLOWED_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".bmp"}
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PATH_MEDIA = os.getenv("PATH_MEDIA")
+MAX_SIDE = int(os.getenv("MAX_SIDE") or 2990)
+MAX_MB = int(os.getenv("MAX_MB") or 10)
+
+ALLOWED_EXISTS = {".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".bmp"}
 
 WORKERS = max(1, (os.cpu_count() or 4) - 0)
 
@@ -66,14 +72,20 @@ def _process_one_worker(args_tuple):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True, help="Папка с фото")
+    parser.add_argument("--input", help="Папка с фото (иначе берётся из .env)")
     args = parser.parse_args()
 
-    in_root = Path(args.input).resolve()
+    if args.input:
+        in_root = Path(args.input).resolve()
+    elif PATH_MEDIA:
+        in_root = Path(PATH_MEDIA).resolve()
+    else:
+        print("Не задана папка: укажите --input или PATH_MEDIA в .env")
+        return
 
     out_root = Path(__file__).resolve().parent / "convert_image" / in_root.name
 
-    files = [p for p in in_root.rglob("*") if p.suffix.lower() in ALLOWED_EXTS]
+    files = [p for p in in_root.rglob("*") if p.suffix.lower() in ALLOWED_EXISTS]
 
     if not files:
         print("Нет подходящих файлов для обработки.")
