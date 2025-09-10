@@ -70,7 +70,8 @@ def main():
     args = parser.parse_args()
 
     in_root = Path(args.input).resolve()
-    out_root = Path(__file__).resolve().parent / "convert_image"
+
+    out_root = Path(__file__).resolve().parent / "convert_image" / in_root.name
 
     files = [p for p in in_root.rglob("*") if p.suffix.lower() in ALLOWED_EXTS]
 
