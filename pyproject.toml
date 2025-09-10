@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "convert-images"
+version = "0.1.0"
+description = "Конвертер изображений в JPEG с ограничением размера и параллельной обработкой"
+authors = ["Ваше имя <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pillow = "^10.0.0"
+
+[tool.poetry.scripts]
+convert-images = "convert_images:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
